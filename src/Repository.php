@@ -2,8 +2,8 @@
 
 namespace IMW\RepositoryQS;
 
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use IMW\RepositoryQS\Contracts\Repository as RepositoryContract;
 use InvalidArgumentException;
 
@@ -47,7 +47,7 @@ abstract class Repository implements RepositoryContract
     /**
      * Determine if we should remove global scopes.
      *
-     * @var array|boolean
+     * @var array|bool
      */
     public $withoutGlobalScopes = false;
 
@@ -94,16 +94,16 @@ abstract class Repository implements RepositoryContract
     public $filters = [];
 
     /**
-     * Determine if we should force pagination even if not requested
+     * Determine if we should force pagination even if not requested.
      *
-     * @var boolean
+     * @var bool
      */
     public $forcePagination = false;
 
     /**
      * The total of records per one requests.
      *
-     * @var integer
+     * @var int
      */
     public $recordsPerPage = 12;
 
@@ -112,9 +112,9 @@ abstract class Repository implements RepositoryContract
      *
      * @param \Illuminate\Database\Eloquent\Model|null $model
      *
-     * @return void
-     *
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public function __construct($model = null)
     {
@@ -126,7 +126,7 @@ abstract class Repository implements RepositoryContract
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function list()
     {
@@ -173,7 +173,7 @@ abstract class Repository implements RepositoryContract
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function put(array $data)
     {
@@ -187,7 +187,7 @@ abstract class Repository implements RepositoryContract
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function show($record)
     {
@@ -212,7 +212,7 @@ abstract class Repository implements RepositoryContract
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function update($record, array $data)
     {
@@ -232,8 +232,9 @@ abstract class Repository implements RepositoryContract
 
         return $record;
     }
+
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function destroy($record)
     {
@@ -241,7 +242,7 @@ abstract class Repository implements RepositoryContract
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function forceDestroy($record)
     {
@@ -258,13 +259,14 @@ abstract class Repository implements RepositoryContract
      */
     public function __call($method, $args)
     {
-        return call_user_func_array(array($this->query, $method), $args);
+        return call_user_func_array([$this->query, $method], $args);
     }
 
     /**
-     * Initialize the repository with a Model
+     * Initialize the repository with a Model.
      *
      * @param \Illuminate\Database\Eloquent\Model|null $model
+     *
      * @return void
      */
     public function init($model)
@@ -272,14 +274,14 @@ abstract class Repository implements RepositoryContract
         // Rely on the model passed to the constructor
         // Than fallback to model property on the repository if exists
         $model = $model ?? $this->model;
-        
-        if($model) {
+
+        if ($model) {
             $this->model = app()->make($model);
         }
 
         // If no model was set we'll guess it based on repository name
         // if the developer decide to enable auto repositories guessing
-        else if (config('repository.auto', false) && $model = $this->guessModel()) {
+        elseif (config('repository.auto', false) && $model = $this->guessModel()) {
             $this->model = $model;
         }
 
@@ -287,7 +289,7 @@ abstract class Repository implements RepositoryContract
         // with the repository class name, to help developer even more
         else {
             throw new InvalidArgumentException(
-                class_basename(get_class($this)) . ' need a Model to interact with.'
+                class_basename(get_class($this)).' need a Model to interact with.'
             );
         }
     }
@@ -315,7 +317,7 @@ abstract class Repository implements RepositoryContract
     /**
      * Determine if this repository need local scopes.
      *
-     * @return boolean
+     * @return bool
      */
     protected function hasScopes()
     {
@@ -341,7 +343,7 @@ abstract class Repository implements RepositoryContract
     /**
      * Determine if this repository need local scopes.
      *
-     * @return boolean
+     * @return bool
      */
     protected function hasGlobalScopes()
     {
@@ -365,7 +367,7 @@ abstract class Repository implements RepositoryContract
     }
 
     /**
-     * Apply filter
+     * Apply filter.
      *
      * @return self
      */
@@ -381,7 +383,7 @@ abstract class Repository implements RepositoryContract
     /**
      * Determine whether this repository should load any relation.
      *
-     * @return boolean
+     * @return bool
      */
     protected function shouldLoadRelations()
     {
@@ -405,7 +407,7 @@ abstract class Repository implements RepositoryContract
     /**
      * Determine whether the repository should eager load relations count.
      *
-     * @return boolean
+     * @return bool
      */
     protected function shouldLoadCounts()
     {
@@ -429,7 +431,7 @@ abstract class Repository implements RepositoryContract
     /**
      * Check whether this repository is sortable.
      *
-     * @return boolean
+     * @return bool
      */
     protected function isSortable()
     {
@@ -445,7 +447,7 @@ abstract class Repository implements RepositoryContract
     /**
      * Check whether this repository is sortable.
      *
-     * @return boolean
+     * @return bool
      */
     protected function isFilterable()
     {
@@ -461,7 +463,7 @@ abstract class Repository implements RepositoryContract
     /**
      * Check whether this repository need to paginate.
      *
-     * @return boolean
+     * @return bool
      */
     protected function isPaginable()
     {
@@ -484,7 +486,7 @@ abstract class Repository implements RepositoryContract
     /**
      * Check whether this repository need to use search filter.
      *
-     * @return boolean
+     * @return bool
      */
     protected function isSearchable()
     {

@@ -6,20 +6,19 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * Synchronizers helpers
+ * Synchronizers helpers.
  *
  * @author Yassine Sedrani <sed.yassine@live.fr>
- * @package Flamingoo
  * @license MIT
  */
 trait Synchronizers
 {
-
     /**
-     * Synchronize product images
+     * Synchronize product images.
      *
      * @param \App\Models\Product $product
-     * @param array|null $images
+     * @param array|null          $images
+     *
      * @return void
      */
     public static function synchronizeProductImages($product, ?array $images = [])
@@ -35,14 +34,13 @@ trait Synchronizers
                 $imageIds[] = $product->images()->updateOrCreate(
                     ['uri' => $image['uri']],
                     [
-                        'primary' => $image['primary'],
+                        'primary'   => $image['primary'],
                         'secondary' => $image['secondary'],
-                        'priority' => $priority + 1
+                        'priority'  => $priority + 1,
                     ]
                 )->id;
             }
         }
-
 
         // Clean unused images
         $product->images()
@@ -55,11 +53,12 @@ trait Synchronizers
     }
 
     /**
-     * Synchronize product options
+     * Synchronize product options.
      *
      * @param \App\Models\Product $product
-     * @param array|null $options
-     * @param string|null $locale
+     * @param array|null          $options
+     * @param string|null         $locale
+     *
      * @return void
      */
     public static function synchronizeProductOptions($product, ?array $options = [], ?string $locale = null)
@@ -68,7 +67,7 @@ trait Synchronizers
         if (is_null($options) || empty($options)) {
             $optionIds = [];
         } else {
-            $defaultLocale  = $locale ?? Config::get('app.locale');
+            $defaultLocale = $locale ?? Config::get('app.locale');
 
             foreach ($options as $optionData) {
                 // If the id is present in the data let's try to retrieve it
@@ -76,10 +75,10 @@ trait Synchronizers
                     ?? $product->options()->create();
 
                 $option->update([
-                    'required' => (bool) $optionData['required'],
+                    'required'     => (bool) $optionData['required'],
                     $defaultLocale => [
-                        'name' => $optionData['name']
-                    ]
+                        'name' => $optionData['name'],
+                    ],
                 ]);
 
                 // Update options choices
@@ -96,11 +95,12 @@ trait Synchronizers
     }
 
     /**
-     * Synchronize product option choices
+     * Synchronize product option choices.
      *
      * @param \App\Models\ProductAttribute $option
-     * @param array|null $choices
-     * @param string|null $locale
+     * @param array|null                   $choices
+     * @param string|null                  $locale
+     *
      * @return void
      */
     public static function synchronizeOptionChoices($option, ?array $choices = [], ?string $locale = null)
@@ -109,7 +109,7 @@ trait Synchronizers
         if (is_null($choices) || empty($choices)) {
             $choiceIds = [];
         } else {
-            $defaultLocale  = $locale ?? Config::get('app.locale');
+            $defaultLocale = $locale ?? Config::get('app.locale');
 
             foreach ($choices as $choiceData) {
                 // If the id is present in the data let's try to retrieve it
@@ -117,10 +117,10 @@ trait Synchronizers
                     ?? $option->values()->create();
 
                 $choice->update([
-                    'fee' => (float) $choiceData['fee'],
+                    'fee'          => (float) $choiceData['fee'],
                     $defaultLocale => [
-                        'value' => $choiceData['value']
-                    ]
+                        'value' => $choiceData['value'],
+                    ],
                 ]);
 
                 $choiceIds[] = $choice->id;
@@ -134,11 +134,12 @@ trait Synchronizers
     }
 
     /**
-     * Synchronize product options
+     * Synchronize product options.
      *
      * @param \App\Models\Product $product
-     * @param array|null $features
-     * @param string|null $locale
+     * @param array|null          $features
+     * @param string|null         $locale
+     *
      * @return void
      */
     public static function synchronizeProductFeatures($product, ?array $features = [], ?string $locale = null)
@@ -147,16 +148,16 @@ trait Synchronizers
         if (is_null($features) || empty($features)) {
             $featureIds = [];
         } else {
-            $defaultLocale  = $locale ?? Config::get('app.locale');
+            $defaultLocale = $locale ?? Config::get('app.locale');
 
             foreach ($features as $priority => $featureData) {
                 // If the id is present in the data let's try to retrieve it
                 $feature = \App\Models\ProductFeature::whereTranslation('name', $featureData['name'])
                     ->updateOrCreate([], [
-                        'priority' => $priority + 1,
+                        'priority'     => $priority + 1,
                         $defaultLocale => [
-                            'name' => $featureData['name']
-                        ]
+                            'name' => $featureData['name'],
+                        ],
                     ]);
 
                 if ($feature->icon !== $featureData['icon']) {
@@ -172,13 +173,13 @@ trait Synchronizers
     }
 
     /**
-     * Synchronize product categories
+     * Synchronize product categories.
      *
      * @param \App\Models\Product $product
-     * @param array|null $categories
+     * @param array|null          $categories
+     *
      * @return void
      */
-
     public static function synchronizeProductCategories($product, ?array $categories = [])
     {
         $product->categories()->sync(
@@ -189,13 +190,13 @@ trait Synchronizers
     }
 
     /**
-     * Synchronize product categories
+     * Synchronize product categories.
      *
      * @param \App\Models\Product $product
-     * @param array|null $categories
+     * @param array|null          $categories
+     *
      * @return void
      */
-
     public static function synchronizeProductCollections($product, ?array $collections = [])
     {
         $product->collections()->sync(

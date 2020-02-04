@@ -20,7 +20,7 @@ class CommandsTest extends TestCase
             ->assertExitCode(0);
 
         $this->artisan('make:repository BookRepository')
-            ->expectsOutput("Repository already exists!");
+            ->expectsOutput('Repository already exists!');
     }
 
     /** @test */
