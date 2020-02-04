@@ -3,13 +3,12 @@
 namespace IMW\RepositoryQS\Concerns;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 trait Filterable
 {
     /**
-     * Apply filter
+     * Apply filter.
      *
      * @return self
      */
@@ -38,16 +37,17 @@ trait Filterable
             }
 
             // if the loop excution is here
-
         }
+
         return $this;
     }
 
     /**
-     * Guess relationship and apply query
+     * Guess relationship and apply query.
      *
      * @param string $relation
-     * @param mixed $filterValue
+     * @param mixed  $filterValue
+     *
      * @return void
      */
     protected function filterByRelationship($relationAccessor, $filterValue)
@@ -64,16 +64,17 @@ trait Filterable
 
                 // TO DO: add all available relationships
             default:
-                # code...
+                // code...
                 break;
         }
     }
 
     /**
-     * Apply BelongsToMany join query
+     * Apply BelongsToMany join query.
      *
      * @param \Illuminate\Database\Eloquent\Relations\BelongsToMany $relation
-     * @param mixed $filterValue
+     * @param mixed                                                 $filterValue
+     *
      * @return void
      */
     protected function applyBelongsToManyFilter(BelongsToMany $relation, $filterValue)
@@ -87,10 +88,11 @@ trait Filterable
     }
 
     /**
-     * Apply BelongsToMany join query
+     * Apply BelongsToMany join query.
      *
      * @param \Illuminate\Database\Eloquent\Relations\BelongsTo $relation
-     * @param mixed $filterValue
+     * @param mixed                                             $filterValue
+     *
      * @return void
      */
     protected function applyBelongsToFilter(BelongsTo $relation, $filterValue)
@@ -102,6 +104,5 @@ trait Filterable
         //     '=',
         //     $this->model->getQualifiedKeyName()
         // )->where($relation->getQualifiedRelatedPivotKeyName(), $filterValue);
-
     }
 }

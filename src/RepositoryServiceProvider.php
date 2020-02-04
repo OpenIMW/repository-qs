@@ -3,8 +3,8 @@
 namespace IMW\RepositoryQS;
 
 use Illuminate\Support\ServiceProvider;
-use IMW\RepositoryQS\Contracts\Repository;
 use IMW\RepositoryQS\Commands\RepositoryMakeCommand;
+use IMW\RepositoryQS\Contracts\Repository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -29,7 +29,7 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                RepositoryMakeCommand::class
+                RepositoryMakeCommand::class,
             ]);
         }
     }
