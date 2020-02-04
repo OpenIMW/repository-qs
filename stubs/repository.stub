@@ -1,0 +1,10 @@
+<?php
+
+namespace DummyNamespace;
+
+use IMW\RepositoryQS\Repository;
+
+class DummyClass extends Repository
+{
+    //
+}
